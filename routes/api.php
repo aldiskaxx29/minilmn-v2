@@ -3,11 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthLoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CustomEducationController;
+use App\Http\Controllers\EBookController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HistoryGameController;
 use App\Http\Controllers\LoginGoogleController;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,32 +35,45 @@ Route::prefix('auth')->group(function () {
   
 });
 
-Route::group(['middleware' => ['web']], function () {
-  Route::get('login-google', [LoginGoogleController::class, 'redirect']);
-  Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
-});
+Route::get('auth/login/google', [AuthLoginController::class, 'redirectUser']);
+// Route::get('auth/google-callback', [AuthLoginController::class, 'handleAuthCallback']);
+Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
+
+// Route::group(['middleware' => ['web']], function () {
+//   Route::get('login-google', [LoginGoogleController::class, 'redirect']);
+//   Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
+// });
 
 Route::middleware('auth:sanctum')->group(function(){
 
-  Route::post('game/getAll', [GameController::class, 'getAll']);
-  Route::post('game/getOne', [GameController::class, 'getOne']);
+  Route::get('game/getAll', [GameController::class, 'getAll']);
+  Route::get('game/getOne', [GameController::class, 'getOne']);
   Route::post('game/save', [GameController::class, 'save']);
   Route::post('game/delete', [GameController::class, 'delete']);
 
-  Route::post('contact-us/getAll', [ContactController::class, 'getAll']);
-  Route::post('contact-us/getOne', [ContactController::class, 'getOne']);
+  Route::get('contact-us/getAll', [ContactController::class, 'getAll']);
+  Route::get('contact-us/getOne', [ContactController::class, 'getOne']);
   Route::post('contact-us/save', [ContactController::class, 'save']);
   Route::post('contact-us/delete', [ContactController::class, 'delete']);
 
-  Route::post('custom-education/getAll', [CustomEducationController::class, 'getAll']); 
-  Route::post('custom-education/getOne', [CustomEducationController::class, 'getOne']); 
+  Route::get('custom-education/getAll', [CustomEducationController::class, 'getAll']); 
+  Route::get('custom-education/getOne', [CustomEducationController::class, 'getOne']); 
   Route::post('custom-education/save', [CustomEducationController::class, 'save']); 
   Route::post('custom-education/delete', [CustomEducationController::class, 'delete']); 
 
-  Route::post('history-game/getAll', [HistoryGameController::class, 'getAll']);
-  Route::post('history-game/getOne', [HistoryGameController::class, 'getOne']);
+  Route::get('history-game/getAll', [HistoryGameController::class, 'getAll']);
+  Route::get('history-game/getOne', [HistoryGameController::class, 'getOne']);
   Route::post('history-game/save', [HistoryGameController::class, 'save']);
   Route::post('history-game/delete', [HistoryGameController::class, 'delete']);
+
+  Route::get('history-game/daily', [HistoryGameController::class, 'historyDaily']);
+  Route::get('history-game/weekly', [HistoryGameController::class, 'historyWeekly']);
+  Route::get('history-game/monthly', [HistoryGameController::class, 'historyMonthly']);
+
+  Route::get('ebook/getAll', [EBookController::class, 'getAll']);
+  Route::get('ebook/getOne', [EBookController::class, 'getOne']);
+  Route::get('ebook/save ', [EBookController::class, 'save ']);
+  Route::get('ebook/delete ', [EBookController::class, 'delete ']);
 
   Route::post('auth/logout', [AuthController::class, 'logout']);
 

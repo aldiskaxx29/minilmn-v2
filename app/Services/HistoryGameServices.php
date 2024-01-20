@@ -83,5 +83,25 @@ class HistoryGameServices{
       'data' => $data
     ]);
   }
+
+  public function daily(){
+    $user = auth()->user()->id;
+    $now = date('Y-m-d');
+    return $this->historyGameRepository->daily($user, $now);
+  }
+
+  public function weekly(){
+    $user = auth()->user()->id;
+    $startDate = date('Y-m-d', strtotime('last monday')); // Mengambil tanggal awal minggu ini
+    $endDate = date('Y-m-d', strtotime('next sunday'));
+
+    return $this->historyGameRepository->weekly($startDate, $endDate, $user);
+  }
+
+  public function monthly(){
+    $user = auth()->user()->id;
+    $month = date('m');
+    return $this->historyGameRepository->monthly($month, $user);
+  }
   
 }

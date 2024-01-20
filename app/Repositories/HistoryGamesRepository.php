@@ -15,7 +15,7 @@ class HistoryGamesRepository{
   }
 
   public function getAll(){
-    return $this->model->get();
+    return $this->model->with(['game','user'])->get();
   }
 
   public function getOne($id){
@@ -39,5 +39,20 @@ class HistoryGamesRepository{
 
   public function delete($id){
     return $this->model->where('id', $id)->delete();
+  }
+
+  public function daily($user, $now){
+    return $this->model->where('user_id', $user)
+          ->where('date', $now)->get();
+  }
+
+  public function weekly($start, $end, $user){
+    return $this->model->where('user_id', $user)
+    ->whereBetween('date', [$start, $end])->get();
+  }
+
+  public function monthly($month, $user){
+    return $this->model->where('user_id', $user)
+    ->whereMonth('date', $month)->get();
   }
 }

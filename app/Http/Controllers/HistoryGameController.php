@@ -31,4 +31,16 @@ class HistoryGameController extends Controller
     public function delete(Request $request){
         return $this->historyGame->delete($request);
     }
+
+    public function historyDaily(Request $request){
+        return $this->historyGame->daily();
+    }
+
+    public function historyWeekly(Request $request){
+        return $this->historyGame->weekly();
+    }
+
+    public function historyMonthly(Request $request){
+        return $this->historyGame->monthly();
+    }
 }
