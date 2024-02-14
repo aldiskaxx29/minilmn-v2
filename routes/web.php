@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\TestingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,5 @@ Route::get('/', function () {
 // Route::group(['middleware' => ['web']], function () {
     Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
 // });
+
+Route::get('testing', [TestingController::class, 'index']);

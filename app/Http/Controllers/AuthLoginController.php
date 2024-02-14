@@ -32,13 +32,10 @@ class AuthLoginController extends Controller
                     'email' => $socialiteUser->getEmail(),
                 ], [
                     'email_verified_at' => now(),
-                    'name' => $socialiteUser->getNamme(), 
+                    'username' => $socialiteUser->getNamme(), 
                     'email' => $socialiteUser,
                     'password' => bcrypt(12345678), 
                     'level_user' => 2, 
-                    'image' => '', 
-                    'parent' => '', 
-                    'status' => 1, 
                     'googel_id' => $socialiteUser->getId()
                 ]);
         return response()->json([

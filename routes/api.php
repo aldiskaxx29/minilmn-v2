@@ -10,6 +10,7 @@ use App\Http\Controllers\EBookController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HistoryGameController;
 use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Storage;
 
 /*
@@ -32,7 +33,7 @@ Route::prefix('auth')->group(function () {
   Route::post('register', [AuthController::class, 'register']);
   Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
   Route::post('check-code', [AuthController::class, 'checkCode']);
-  
+  Route::post('updatePassword', [AuthController::class, 'updatePassword']);
 });
 
 Route::get('auth/login/google', [AuthLoginController::class, 'redirectUser']);
@@ -44,7 +45,7 @@ Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
 //   Route::get('auth/google-callback', [LoginGoogleController::class, 'callback']);
 // });
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware(['auth:sanctum','check.token'])->group(function(){
 
   Route::get('game/getAll', [GameController::class, 'getAll']);
   Route::get('game/getOne', [GameController::class, 'getOne']);
@@ -72,9 +73,13 @@ Route::middleware('auth:sanctum')->group(function(){
 
   Route::get('ebook/getAll', [EBookController::class, 'getAll']);
   Route::get('ebook/getOne', [EBookController::class, 'getOne']);
-  Route::get('ebook/save ', [EBookController::class, 'save ']);
-  Route::get('ebook/delete ', [EBookController::class, 'delete ']);
+  Route::post('ebook/save ', [EBookController::class, 'save ']);
+  Route::post('ebook/delete ', [EBookController::class, 'delete ']);
+
+  Route::get('user/getAll', [UserController::class, 'getAll']);
+  Route::get('user/getOne', [UserController::class, 'getOne']);
+  Route::post('user/save', [UserController::class, 'save']);
+  Route::post('user/delete', [UserController::class, 'delete']);
 
   Route::post('auth/logout', [AuthController::class, 'logout']);
-
 });

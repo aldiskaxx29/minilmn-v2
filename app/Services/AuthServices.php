@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthServices{
     protected $authRepository;
+    public $request;
 
     public function __construct(
-        AuthRepository $authRepository
+        AuthRepository $authRepository,
+        Request $request
     ){
         $this->authRepository = $authRepository;
+        $this->request = $request;
     }
 
     public function login($request){
@@ -67,13 +70,11 @@ class AuthServices{
 
     public function register($request){
         $rules= [
-            'name' => 'required',
             'email' => 'required',
             'password' => 'required',
         ];
 
         $messages= [
-            'name.required' => 'Please enter a name.',
             'email.required' => 'Please enter a email.',
             'password.required' => 'Please enter a password.'
         ];
@@ -92,9 +93,13 @@ class AuthServices{
 
         $params = $request->only([
             'id',
-            'name',
+            'username',
             'email',
-            'password'
+            'password',
+            'name_kids',
+            'age',
+            'parent',
+            'gender'
         ]);
 
         if($request->file('image')){
@@ -106,6 +111,54 @@ class AuthServices{
 
         $params['image'] = $path ?? '';
 
-        return $this->authRepository->register($params);
+        $user = $this->authRepository->register($params);
+
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ]);
     }
+
+    public function updatePassword(){
+        $rules = [
+          'password' => 'required',
+          'konfirmasi_password' => 'required'
+        ];
+        $messaeg  = [
+          'password.required' => 'Password canot be null',
+          'konfirmasi_password.required' => 'Konfirmasi Password canot be null',
+        ];
+    
+        $validator = Validator::make($this->request->all(), $rules, $messaeg);
+    
+        if($validator->fails()){
+          $messages = $validator->messages();
+          $error = $messages->all();
+    
+          return response()->json([
+            'status' => false,
+            'message' => $error
+          ]);
+        }
+    
+        $params = $this->request->only([
+          'id',
+          'password',
+          'konfirmasi_password'
+        ]);
+    
+        try {
+          $user = $this->authRepository->updatePassword($params);
+    
+          return response()->json([
+            'status' => true,
+            'data' => $user
+          ]);
+        } catch (\Exception $e) {
+          return response()->json([
+            'status' => false,
+            'messae' => $e->getMessage()
+          ]);
+        }
+      }
 }

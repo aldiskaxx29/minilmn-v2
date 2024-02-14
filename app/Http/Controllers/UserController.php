@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\UserServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -20,8 +22,8 @@ class UserController extends Controller
         return $this->userServices->getAll();
     }
 
-    public function getOne(Request $request){
-        return $this->userServices->getOne($request);
+    public function getOne(){
+        return $this->userServices->getOne();
     }
 
     public function save(Request $request){
@@ -31,4 +33,6 @@ class UserController extends Controller
     public function delete(Request $request){
         return $this->userServices->delete($request);
     }
+
+
 }

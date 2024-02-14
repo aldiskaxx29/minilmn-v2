@@ -87,7 +87,12 @@ class HistoryGameServices{
   public function daily(){
     $user = auth()->user()->id;
     $now = date('Y-m-d');
-    return $this->historyGameRepository->daily($user, $now);
+    $history = $this->historyGameRepository->daily($user, $now);
+
+    return response()->json([
+      'status' => true,
+      'data' => $history
+    ]);
   }
 
   public function weekly(){
@@ -95,13 +100,23 @@ class HistoryGameServices{
     $startDate = date('Y-m-d', strtotime('last monday')); // Mengambil tanggal awal minggu ini
     $endDate = date('Y-m-d', strtotime('next sunday'));
 
-    return $this->historyGameRepository->weekly($startDate, $endDate, $user);
+    $history =  $this->historyGameRepository->weekly($startDate, $endDate, $user);
+    
+    return response()->json([
+      'status' => true,
+      'data' => $history
+    ]);
   }
 
   public function monthly(){
     $user = auth()->user()->id;
     $month = date('m');
-    return $this->historyGameRepository->monthly($month, $user);
+    $history =  $this->historyGameRepository->monthly($month, $user);
+
+    return response()->json([
+      'status' => true,
+      'data' => $history
+    ]);
   }
   
 }

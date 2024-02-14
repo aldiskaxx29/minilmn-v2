@@ -3,14 +3,19 @@
 namespace App\Services;
 
 use App\Repositories\EBookRepository;
+use Illuminate\Http\Request;
 
 class EBookServices{
 
   private $ebookRepository;
-
-  public function __construct(EBookRepository $ebookRepository) 
+  public $request;
+  public function __construct(
+    EBookRepository $ebookRepository,
+    Request $request
+    ) 
   {
     $this->ebookRepository = $ebookRepository;
+    $this->request = $request;
   }
 
   public function getAll(){
@@ -29,8 +34,8 @@ class EBookServices{
     
   }
 
-  public function getOne($request){
-    $id = $request->input('id');
+  public function getOne(){
+    $id = $this->request->input('id');
     try {
       $data = $this->ebookRepository->getOne($id);
 

@@ -18,8 +18,8 @@ class EBookController extends Controller
         return $this->ebookServices->getAll($request);
     }
 
-    public function getOne(Request $request){
-        return $this->ebookServices->getOne($request);
+    public function getOne(){
+        return $this->ebookServices->getOne();
     }
 
     public function save(Request $request){
