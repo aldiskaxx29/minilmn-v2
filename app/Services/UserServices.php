@@ -64,7 +64,7 @@ class UserServices{
     ]);
 
     if($this->request->file('image')){
-      $file = $this->request->file('file');
+      $file = $this->request->file('image');
       $name = time();
       $extension = $file->getClientOriginalExtension();
       $fileName = $name.'.'.$extension;
